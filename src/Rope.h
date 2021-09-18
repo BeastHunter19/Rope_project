@@ -15,16 +15,17 @@ public:
 	//after concatenation deletion of starting ropes should be avoided
 	Rope* concatenate(Rope* R);
 	char index(int i);
-	char index(Node* p, int i);
 	std::pair<Rope*, Rope*> split(int i);
 	Rope* insert(Rope* R, int i);
 	Rope* cancel(int i, int j);
 	int length();
 	void printInorder();
-	void printInorder(Node* p);
 	void print();
-	void print(Node* p);
+
 private:
 	Node* root;
+	char index(Node* p, int i);
+	void printInorder(Node* p);
+	void print(Node* p);
 };
 

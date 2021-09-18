@@ -30,7 +30,7 @@ Rope::~Rope()
 
 Rope* Rope::concatenate(Rope* R)
 {
-	if(R->root == nullptr) return this;
+	if(R->root == nullptr || R == nullptr) return this;
 	if(this->root == nullptr) return R;
 	Node* newRoot = new Node;
 	newRoot->init(this->root, R->root);
@@ -70,8 +70,8 @@ std::pair<Rope*, Rope*> Rope::split(int i)
 			iter = iter->left;
 		}
 		else if (index >= iter->weight && iter->right) {
-			iter = iter->right;
 			index -= iter->weight;
+			iter = iter->right;
 		}
 	}
 
@@ -134,6 +134,7 @@ std::pair<Rope*, Rope*> Rope::split(int i)
 
 Rope* Rope::insert(Rope* R, int i)
 {
+	if (R == nullptr) return this;
 	std::pair<Rope*, Rope*> pair = this->split(i);
 	Rope* S1 = pair.first;
 	Rope* S2 = pair.second;
@@ -142,7 +143,14 @@ Rope* Rope::insert(Rope* R, int i)
 
 Rope* Rope::cancel(int i, int j)
 {
-	return nullptr;
+;	Rope *S1, *S2, *S3;
+	std::pair<Rope*, Rope*> pair = this->split(i-1);
+	S1 = pair.first;
+	S2 = pair.second;
+	pair = S2->split(j-1);
+	S2 = pair.first;
+	S3 = pair.second;
+	return S1->concatenate(S3);
 }
 
 int Rope::length()

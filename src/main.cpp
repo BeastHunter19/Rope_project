@@ -64,15 +64,22 @@ int main()
 	std::cout << "\n--- Inserting R6 in R4 at position 5 ---\n";
 	std::string s3("sssssssssstttttttttt");
 	Rope* R6 = new Rope(s3);
-	Rope* R7 = R4->insert(R6, 5);
-	std::cout << "Inorder visit of the rope R7:\n";
-	R7->printInorder();
+	R4 = R4->insert(R6, 5);
+	std::cout << "Inorder visit of the rope R4:\n";
+	R4->printInorder();
 	std::cout << "Rope content: ";
-	R7->print();
+	R4->print();
+
+	//deletion works correctly
+	std::cout << "\n--- Deleting 13 characters from R5 ---\n";
+	R5 = R5->cancel(19, 13);
+	std::cout << "Inorder visit of the rope R5:\n";
+	R5->printInorder();
+	std::cout << "Rope content: ";
+	R5->print();
 
 	delete R1;
 	delete R2;
 	delete R4;
 	delete R5;
-	delete R7;
 }
