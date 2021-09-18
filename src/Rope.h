@@ -12,6 +12,7 @@ public:
 	Rope(Node* r);
 	~Rope();
 
+	//after concatenation deletion of starting ropes should be avoided
 	Rope* concatenate(Rope* R);
 	char index(int i);
 	char index(Node* p, int i);

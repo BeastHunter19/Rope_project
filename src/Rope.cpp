@@ -25,17 +25,29 @@ Rope::~Rope()
 
 Rope* Rope::concatenate(Rope* R)
 {
-	return nullptr;
+	if(R->root == nullptr) return this;
+	if(this->root == nullptr) return R;
+	Node* newRoot = new Node;
+	newRoot->init(this->root, R->root);
+	return new Rope(newRoot);
 }
 
 char Rope::index(int i)
 {
-	return 0;
+	if(this->root == nullptr) return '\0';
+	return index(this->root, i);
 }
 
 char Rope::index(Node* p, int i)
 {
-	return 0;
+	if(i < 0 || i > length()) return '\0';
+	if (i < p->weight && p->left) {
+		return index(p->left, i);
+	}
+	if (i >= p->weight && p->right) {
+		return index(p->right, i - p->weight);
+	}
+	return p->str.at(i);
 }
 
 std::pair<Rope*, Rope*> Rope::split(int i)
