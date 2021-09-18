@@ -4,22 +4,27 @@
 
 Rope::Rope(std::string& s)
 {
+	//std::cerr << "Rope created\n";
 	this->root = new Node;
 	this->root->init(s);
 }
 
 Rope::Rope(char* s)
 {
+	//std::cerr << "Rope created\n";
 	std::string str(s);
 	this->root = new Node;
 	this->root->init(str);
 }
 
 Rope::Rope(Node* r): root(r)
-{}
+{
+	//std::cerr << "Rope created\n";
+}
 
 Rope::~Rope()
 {
+	//std::cerr << "Rope destroyed\n";
 	if(this->root) delete this->root;
 }
 
@@ -29,6 +34,8 @@ Rope* Rope::concatenate(Rope* R)
 	if(this->root == nullptr) return R;
 	Node* newRoot = new Node;
 	newRoot->init(this->root, R->root);
+	this->root = nullptr;
+	R->root = nullptr;
 	return new Rope(newRoot);
 }
 
@@ -106,7 +113,6 @@ std::pair<Rope*, Rope*> Rope::split(int i)
 			iter->weight -= subtractCount;
 			if (iter->right) {
 				tmp = new Rope(iter->right);
-				iter->len -= iter->right->len;
 				subtractCount += iter->right->len;
 				iter->right->parent = nullptr;
 				iter->right = nullptr;
@@ -114,6 +120,7 @@ std::pair<Rope*, Rope*> Rope::split(int i)
 				else S2 = S2->concatenate(tmp);
 			}
 		}
+		iter->len -= subtractCount;
 
 		//if iter is pointing to the root exit from the loop
 		if (iter->parent == nullptr) break;
@@ -127,7 +134,10 @@ std::pair<Rope*, Rope*> Rope::split(int i)
 
 Rope* Rope::insert(Rope* R, int i)
 {
-	return nullptr;
+	std::pair<Rope*, Rope*> pair = this->split(i);
+	Rope* S1 = pair.first;
+	Rope* S2 = pair.second;
+	return S1->concatenate(R)->concatenate(S2);
 }
 
 Rope* Rope::cancel(int i, int j)

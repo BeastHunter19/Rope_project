@@ -39,6 +39,7 @@ void Node::init(std::string& s)
 
 void Node::init(Node* l, Node* r)
 {
+	if (l == nullptr || r == nullptr) return;
 	this->left = l;
 	this->left->parent = this;
 	this->right = r;
