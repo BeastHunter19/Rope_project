@@ -9,7 +9,7 @@ Rope::Rope(std::string& s)
 	this->root->init(s);
 }
 
-Rope::Rope(char* s)
+Rope::Rope(const char* s)
 {
 	//std::cerr << "Rope created\n";
 	std::string str(s);
@@ -39,13 +39,13 @@ Rope* Rope::concatenate(Rope* R)
 	return new Rope(newRoot);
 }
 
-char Rope::index(int i)
+const char Rope::index(const int i) const
 {
 	if(this->root == nullptr) return '\0';
 	return index(this->root, i);
 }
 
-char Rope::index(Node* p, int i)
+const char Rope::index(Node* p, const int i) const
 {
 	if(i < 0 || i > length()) return '\0';
 	if (i < p->weight && p->left) {
@@ -57,7 +57,7 @@ char Rope::index(Node* p, int i)
 	return p->str.at(i);
 }
 
-std::pair<Rope*, Rope*> Rope::split(int i)
+std::pair<Rope*, Rope*> Rope::split(const int i)
 {
 	if (this->root == nullptr || i < 0 || i > length()) 
 		return std::make_pair(nullptr, nullptr);
@@ -132,7 +132,7 @@ std::pair<Rope*, Rope*> Rope::split(int i)
 	return std::make_pair(this, S2);
 }
 
-Rope* Rope::insert(Rope* R, int i)
+Rope* Rope::insert(Rope* R, const int i)
 {
 	if (R == nullptr) return this;
 	std::pair<Rope*, Rope*> pair = this->split(i);
@@ -141,7 +141,7 @@ Rope* Rope::insert(Rope* R, int i)
 	return S1->concatenate(R)->concatenate(S2);
 }
 
-Rope* Rope::cancel(int i, int j)
+Rope* Rope::cancel(const int i, const int j)
 {
 ;	Rope *S1, *S2, *S3;
 	std::pair<Rope*, Rope*> pair = this->split(i-1);
@@ -150,21 +150,22 @@ Rope* Rope::cancel(int i, int j)
 	pair = S2->split(j-1);
 	S2 = pair.first;
 	S3 = pair.second;
+	delete S2;
 	return S1->concatenate(S3);
 }
 
-int Rope::length()
+const int Rope::length() const
 {
 	return this->root->len;
 }
 
-void Rope::printInorder()
+void Rope::printInorder() const
 {
 	printInorder(this->root);
 	std::cout << std::endl;
 }
 
-void Rope::printInorder(Node* p)
+void Rope::printInorder(Node* p) const
 {
 	if (p) {
 		printInorder(p->left);
@@ -174,17 +175,34 @@ void Rope::printInorder(Node* p)
 	}
 }
 
-void Rope::print()
+void Rope::print() const
 {
-	print(this->root);
+	print(this->root, std::cout);
 	std::cout << std::endl;
 }
 
-void Rope::print(Node* p)
+const char Rope::operator[](std::size_t idx) const
+{
+	return this->index(idx);
+}
+
+void Rope::print(Node* p, std::ostream& stream) const
 {
 	if (p) {
-		print(p->left);
-		std::cout << p->str;
-		print(p->right);
+		print(p->left, stream);
+		stream << p->str;
+		print(p->right, stream);
 	}
+}
+
+std::ostream& operator<<(std::ostream& os, const Rope& obj)
+{
+	obj.print(obj.root, os);
+	return os;
+}
+
+Rope& operator+(Rope& R1, Rope& R2)
+{
+	R1 = *R1.concatenate(&R2);
+	return R1;
 }
