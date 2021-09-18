@@ -51,5 +51,17 @@ int main()
 	std::cout << "Rope content: ";
 	R2->print();
 
+	//splitting works correctly
+	Rope *R4, *R5;
+	std::pair<Rope*, Rope*> pair = R3->split(15);
+	R4 = pair.first;
+	R5 = pair.second;
+	R4->printInorder();
+	R4->print();
+	R5->printInorder();
+	R5->print();
+	R1->printInorder();
+	R1->print();
+
 	delete R3;
 }
