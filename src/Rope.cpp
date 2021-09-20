@@ -4,27 +4,22 @@
 
 Rope::Rope(std::string& s)
 {
-	//std::cerr << "Rope created\n";
 	this->root = new Node;
 	this->root->init(s);
 }
 
 Rope::Rope(const char* s)
 {
-	//std::cerr << "Rope created\n";
 	std::string str(s);
 	this->root = new Node;
 	this->root->init(str);
 }
 
 Rope::Rope(Node* r): root(r)
-{
-	//std::cerr << "Rope created\n";
-}
+{}
 
 Rope::~Rope()
 {
-	//std::cerr << "Rope destroyed\n";
 	if(this->root) delete this->root;
 }
 
@@ -41,13 +36,12 @@ Rope* Rope::concatenate(Rope* R)
 
 const char Rope::index(const int i) const
 {
-	if(this->root == nullptr) return '\0';
+	if(this->root == nullptr || i < 0 || i > length()) return '\0';
 	return index(this->root, i);
 }
 
 const char Rope::index(Node* p, const int i) const
 {
-	if(i < 0 || i > length()) return '\0';
 	if (i < p->weight && p->left) {
 		return index(p->left, i);
 	}
@@ -59,7 +53,7 @@ const char Rope::index(Node* p, const int i) const
 
 std::pair<Rope*, Rope*> Rope::split(const int i)
 {
-	if (this->root == nullptr || i < 0 || i > length()) 
+	if (this->root == nullptr || i < 0 || i >= length()) 
 		return std::make_pair(nullptr, nullptr);
 
 	//searching for the node containing the split point
@@ -134,7 +128,7 @@ std::pair<Rope*, Rope*> Rope::split(const int i)
 
 Rope* Rope::insert(Rope* R, const int i)
 {
-	if (R == nullptr) return this;
+	if (R == nullptr || R->root == nullptr || i < 0 || i >= length()) return this;
 	std::pair<Rope*, Rope*> pair = this->split(i);
 	Rope* S1 = pair.first;
 	Rope* S2 = pair.second;
@@ -143,7 +137,8 @@ Rope* Rope::insert(Rope* R, const int i)
 
 Rope* Rope::cancel(const int i, const int j)
 {
-;	Rope *S1, *S2, *S3;
+	if(i < 0 || i >= length() || i + j - 1 >= length()) return this;
+	Rope *S1, *S2, *S3;
 	std::pair<Rope*, Rope*> pair = this->split(i-1);
 	S1 = pair.first;
 	S2 = pair.second;

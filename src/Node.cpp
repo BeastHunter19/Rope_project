@@ -3,13 +3,10 @@
 
 Node::Node(): len(0), weight(0), left(nullptr), right(nullptr), 
  parent(nullptr), str("")
-{
-	//std::cerr << "Node created\n";
-}
+{}
 
 Node::~Node()
 {
-	//std::cerr << "Node destroyed\n";
 	if(this->left) delete this->left;
 	if(this->right) delete this->right;
 }
