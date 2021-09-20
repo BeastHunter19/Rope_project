@@ -193,6 +193,7 @@ void Rope::print(Node* p, std::ostream& stream) const
 std::ostream& operator<<(std::ostream& os, const Rope& obj)
 {
 	obj.print(obj.root, os);
+	std::cout << std::endl;
 	return os;
 }
 

@@ -44,7 +44,7 @@ int main()
 	std::cout << "Rope content: " << *R3;
 
 	//splitting works correctly
-	std::cout << "\n--- Splitting R3 into R4 and R5 ---\n";
+	std::cout << "\n--- Splitting R3 into R4 and R5 at character 15 ---\n";
 	Rope *R4, *R5;
 	std::pair<Rope*, Rope*> pair = R3->split(15);
 	R4 = pair.first;
@@ -60,13 +60,16 @@ int main()
 	std::cout << "\n--- Inserting R6 in R4 at position 5 ---\n";
 	std::string s3("sssssssssstttttttttt");
 	Rope* R6 = new Rope(s3);
+	std::cout << "Inorder visit of the rope R6:\n";
+	R6->printInorder();
+	std::cout << "Rope content: " << *R6;
 	R4 = R4->insert(R6, 5);
 	std::cout << "Inorder visit of the rope R4:\n";
 	R4->printInorder();
 	std::cout << "Rope content: " << *R4;
 
 	//deletion works correctly
-	std::cout << "\n--- Deleting 13 characters from R5 ---\n";
+	std::cout << "\n--- Deleting 13 characters starting at 19 from R5 ---\n";
 	R5 = R5->cancel(19, 13);
 	std::cout << "Inorder visit of the rope R5:\n";
 	R5->printInorder();
